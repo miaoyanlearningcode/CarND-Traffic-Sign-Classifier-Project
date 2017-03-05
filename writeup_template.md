@@ -100,22 +100,24 @@ My final model consisted of the following layers:
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | Input         		| 32x32x3 RGB image   							| 
-| Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x64 	|
-| RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 3x3	    | etc.      									|
-| Fully connected		| etc.        									|
-| Softmax				| etc.        									|
-|						|												|
-|						|												|
+| Convolution 5x5     	| 1x1 stride, valid padding, outputs 28x28x8 	|
+| relu | |
+| Max pooling	      	| 2x2 stride, valid padding, outputs 14x14x8 				|
+| Convolution 3x3	    | 1x1 stride, valid padding, outputs 12x12x16    |
+| relu | |
+| Max pooling			| 2x2 strid, valid padding, output 6x6x16
+| Fully connected		| output 128      									|
+|relu||
+| Fully connected | output 43				
+| softmax| output : logits|
  
 
 
 ####4. Describe how, and identify where in your code, you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-The code for training the model is located in the eigth cell of the ipython notebook. 
+The code for training the model is located in the 24th cell of the ipython notebook. 
 
-To train the model, I used an ....
+To train the model, I used an AdamOptimizer and set batch size as 256, number of epoches as 50 and learning rate as 0.0001
 
 ####5. Describe the approach taken for finding a solution. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
