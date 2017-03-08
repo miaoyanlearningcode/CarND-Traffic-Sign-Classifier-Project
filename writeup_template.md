@@ -31,6 +31,7 @@ The goals / steps of this project are the following:
 [image10]: ./data_web_test/ped.jpg "Traffic Sign 8"
 [image11]: ./data_web_test/german4.jpg "Traffic Sign 9"
 [image12]: ./Output_Result/normalizedImg.png "Normalization"
+[image13]: ./Output_Result/crop.png "crop"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
@@ -75,6 +76,10 @@ As a first step, I generated the fake data so that the numbers of different labe
 Here is the histogram of numbers of different classes after generating fake data:
 
 ![alt text][image2]
+After data augment, the total number of data including training and validation is 83007 and we split it into training set and validation set. 
+Training set has 66405 data.
+Validation set has 16602.
+
 
 As a second step, I normalized the image data. Images taken in different light conditions will lead to different RGB values, which will make troubles to train the weights of CNN layers. Normalization will make the image values between -1 and 1. 
 Here is one example of normalized Image:
@@ -93,7 +98,7 @@ The code for splitting the data into training and validation sets is contained i
 
 To cross validate my model, I randomly split the training data into a training set and validation set. I did this by combining the training data and valid data together, generating the data like I described before and split the data into train data and valid data again using function train_test_split from sklearn.model_selection.
 
-My final training set had X number of images. My validation set and test set had Y and Z number of images.
+My final training set had 66405 number of images. My validation set and test set had 16602 and 12630 number of images.
 
 ####3. Describe, and identify where in your code, what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
@@ -162,13 +167,17 @@ If a well known architecture was chosen:
 
 ####1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
 
-Here are five German traffic signs that I found on the web:
+Here are eight images of german traffic signs and each has a sign to detect except the second one which three signs were cropped. So there are 10 traffic signs for us to test. 
 
 ![alt text][image4] ![alt text][image5] ![alt text][image6] 
 ![alt text][image7] ![alt text][image8] ![alt_text][image9]
 ![alt_text][image10] ![alt_text][image11]
 
-The first image might be difficult to classify because ...
+Here are the signs cropped from the images above:
+![alt_text][image13]
+
+I think the pedestrian sign is the hardest one to predict. There are two reasons: first, the pedestrian sign is taken from the angle that is different from most images; second, during the cropping process, I could not find a good way to crop it to square shape. 
+
 
 ####2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. Identify where in your code predictions were made. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
@@ -178,28 +187,122 @@ Here are the results of the prediction:
 
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Stop Sign      		| Stop sign   									| 
-| U-turn     			| U-turn 										|
-| Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
+| Speed limit (30km/h)      		| Speed limit (30km/h) 									| 
+| Go straight or right     			| Go straight or right 										|
+| No vehicles					| No vehicles											|
+| No entry	      		| No entry					 				|
+| Yield			| Yield      							|
+|	General caution     |	General caution
+|Right-of-way at the next intersection|Right-of-way at the next intersection|
+|Priority road|Priority road|
+|Pedestrians|Children crossing|
+|No entry|No entry|
 
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+The model was able to correctly guess 9 of the 10 traffic signs, which gives an accuracy of 90%. This is close to the accuracy I got from the test set. 
 
 ####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction and identify where in your code softmax probabilities were outputted. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
 The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+For the first image, the model is relatively sure that this is a speed limit(30 km/h) (probability of 0.999), and the image does contain a stop sign. The top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+| 9.99998689e-01  | Speed limit (30km/h) | 
+| 1.02727552e-06  | Roundabout mandatory |
+| 2.48929041e-07  | Speed limit (50km/h) |
+| 3.21363913e-09  | Speed limit (80km/h) |
+| 1.05783479e-10  | Speed limit (60km/h) |
 
 
-For the second image ... 
+For the second image, the model is relatively sure that this is a go straight or right (probability of 0.996), and the image does contain a go straight or right sign. The top five soft max probabilities were
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 9.99600470e-01      | Go straight or right  | 
+|  3.97549651e-04     | Roundabout mandatory   |
+|   9.74083946e-07    | Go straight or left    |
+|  6.75855972e-07     | Keep right            |
+|2.92002625e-07       | Priority road         |  			
+
+
+For the third image ... 
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 9.99879122e-01     | No vehicles          | 
+| 1.04565108e-04     | No passing           |
+| 1.60360214e-05     | Yield		        |
+| 2.57449500e-07     | Speed limit (30km/h) |
+| 1.64997491e-08     | Traffic signals    |
+
+
+For the fourth image ... 
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 9.99999404e-01  	   | No entry        | 
+| 6.16680666e-07       | Stop	         |
+|    5.10661595e-14    | No vehicles     |
+|     3.60137843e-14   | Bicycles crossing     |
+|   2.50287089e-14     |  Yield  |
+
+For the fifth image ... 
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 	1.00000000e+00     	| Yield         | 
+|   8.14774897e-12     	| Ahead only	|
+|   6.98552154e-12		| No passing    |
+|  	8.16244424e-13      | Keep right	|
+|	5.38518665e-13      |Priority road  |
+
+For the sixth image ... 
+
+| Probability         	| 	Prediction        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 	9.99994516e-01 	|  General caution   		| 
+| 	5.42405996e-06  | Pedestrians				|
+|	2.22703700e-09  | Traffic signals			|
+|	5.44925173e-12  | Road narrows on the right	|		
+| 	2.09899914e-12  | Right-of-way at the next intersection|
+
+For the seventh image ... 
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 	9.99992609e-01   | Right-of-way at the next intersection  | 
+|	6.09703875e-06   |General caution 		|
+| 	1.25875556e-06   | Speed limit (30km/h)	|
+|   2.94801988e-10   | Pedestrians 			|
+|	2.85679036e-10   | Double curve  		|
+For the eighth image ... 
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 	1.00000000e+00   | Priority road  | 
+|  	2.59046663e-14 	 | Stop 		|
+|	5.11301698e-16   | No entry		|
+|  	5.38284940e-19	 | No passing for vehicles over 3.5 metric tons|
+| 	7.50166173e-24   | End of no passing by vehicles over 3.5 metric tons    |
+
+For the ninth image ... 
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 	0.72094488   | Children crossing| 
+|  	0.16860622   | Traffic signals	|
+|   0.10302319   | Bumpy road		|
+|   0.00565148 	 | Road work		|
+| 	0.00158073   | General caution	|
+
+For the tenth image ... 
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 	1.00000000e+00 | No entry           | 
+|	1.07294895e-09 | Stop               |
+|	9.05864574e-16 | No vehicles        |				
+|   8.27528267e-16 | Traffic signals	|
+| 	4.68769262e-16 | Bicycles crossing  |
