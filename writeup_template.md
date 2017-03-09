@@ -32,6 +32,7 @@ The goals / steps of this project are the following:
 [image11]: ./data_web_test/german4.jpg "Traffic Sign 9"
 [image12]: ./Output_Result/normalizedImg.png "Normalization"
 [image13]: ./Output_Result/crop.png "crop"
+[image14]: ./Output_Result/43Classes.png "dataVis"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
@@ -59,9 +60,13 @@ signs data set:
 
 ####2. Include an exploratory visualization of the dataset and identify where the code is in your code file.
 
-The code for this step is contained in the third code cell of the IPython notebook.  
+The code for this step is contained in the fifth code cell of the IPython notebook.  
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the number of each class.
+Here is an exploratory visualization of the data set. 
+
+![alt_text][image14]
+
+Here is a bar chart showing how the number of each class.
 
 ![alt text][image1]
 
@@ -69,7 +74,7 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 
 ####1. Describe how, and identify where in your code, you preprocessed the image data. What tecniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc.
 
-The code for this step is contained in the fourth code cell of the IPython notebook.
+The code for this step is contained in the sixth code cell of the IPython notebook.
 
 As a first step, I generated the fake data so that the numbers of different labels are close. What I did is that I found the label of maxmium number. For each label, compare the number of this labe to the maximum number to find how many data I should genereate. For example, if the maximum number is 10 times as many as the number of label 0, I need generate 9 times more data for label 0. What I did was roataing the images label 0. Roation angle is from -15 degree to degree.  
 
@@ -94,7 +99,7 @@ The normaliztion process is as following:
 
 ####2. Describe how, and identify where in your code, you set up training, validation and testing data. How much data was in each set? Explain what techniques were used to split the data into these sets. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, identify where in your code, and provide example images of the additional data)
 
-The code for splitting the data into training and validation sets is contained in the fifth code cell of the IPython notebook.  
+The code for splitting the data into training and validation sets is contained in the tenth code cell of the IPython notebook.  
 
 To cross validate my model, I randomly split the training data into a training set and validation set. I did this by combining the training data and valid data together, generating the data like I described before and split the data into train data and valid data again using function train_test_split from sklearn.model_selection.
 
@@ -102,7 +107,7 @@ My final training set had 66405 number of images. My validation set and test set
 
 ####3. Describe, and identify where in your code, what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
-The code for my final model is located in the seventh cell of the ipython notebook. 
+The code for my final model is located in the ninth cell of the ipython notebook. 
 
 My final model consisted of the following layers:
 
@@ -124,18 +129,17 @@ My final model consisted of the following layers:
 
 ####4. Describe how, and identify where in your code, you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-The code for training the model is located in the 24th cell of the ipython notebook. 
+The code for training the model is located in the 12th cell of the ipython notebook. 
 
 To train the model, I used an AdamOptimizer and set batch size as 256, number of epoches as 50 and learning rate as 0.0001
 
 ####5. Describe the approach taken for finding a solution. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
-The code for calculating the accuracy of the model is located in the ninth cell of the Ipython notebook.
+The code for calculating the accuracy of the model is located in the 11th cell of the Ipython notebook.
 
 My final model results were:
-* training set accuracy of ?
-* validation set accuracy of 99.57% 
-* test set accuracy of 94.28%
+* validation set accuracy of 99.40% 
+* test set accuracy of 93.25%
 
 If an iterative approach was chosen:
 * What was the first architecture that was tried and why was it chosen?
@@ -156,11 +160,22 @@ If an iterative approach was chosen:
     3. Epoches: If learning rate is set to be very small, the epoches should increase so that the loss function can reach the minimum.
     4. batch_size: Since the number of classes is 43. If we still use 128 as batch_size, the training will take longer.
 * What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
+	
+    CNN working well is because the convolution layers can grab the key features from images and the features could be more complicated as adding more layers. The dropout can avoid overfitting. So the test accuracy can increase. 
+
 
 If a well known architecture was chosen:
 * What architecture was chosen?
+	
+    LeNet
 * Why did you believe it would be relevant to the traffic sign application?
+
+	Because LeNet works well in classifying numbers. It can grab the key features of images and classify them. And traffic sign classificaion is the similar problems but with more data and classes. 
 * How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
+	
+    Training Accuracy:
+    Validation Accuracy:
+    Test Accuracy:
  
 
 ###Test a Model on New Images
@@ -195,7 +210,7 @@ Here are the results of the prediction:
 |	General caution     |	General caution
 |Right-of-way at the next intersection|Right-of-way at the next intersection|
 |Priority road|Priority road|
-|Pedestrians|Children crossing|
+|Road narrows on the right|Children crossing|
 |No entry|No entry|
 
 
@@ -227,7 +242,7 @@ For the second image, the model is relatively sure that this is a go straight or
 |2.92002625e-07       | Priority road         |  			
 
 
-For the third image ... 
+For the third image, the model is relatively sure that this is a No Vehicles (probability of 0.9987), and the image does contain a stop sign. The top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -238,7 +253,7 @@ For the third image ...
 | 1.64997491e-08     | Traffic signals    |
 
 
-For the fourth image ... 
+For the fourth image, the model is relatively sure that this is a No Entry (probability of 0.999), and the image does contain a stop sign. The top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -248,7 +263,7 @@ For the fourth image ...
 |     3.60137843e-14   | Bicycles crossing     |
 |   2.50287089e-14     |  Yield  |
 
-For the fifth image ... 
+For the fifth image,  the model is relatively sure that this is a Yield (probability of closing to 1), and the image does contain a stop sign. The top five soft max probabilities were 
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -258,7 +273,7 @@ For the fifth image ...
 |  	8.16244424e-13      | Keep right	|
 |	5.38518665e-13      |Priority road  |
 
-For the sixth image ... 
+For the sixth image,  the model is relatively sure that this is a General Caution (probability of 0.999), and the image does contain a stop sign. The top five soft max probabilities were
 
 | Probability         	| 	Prediction        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -268,7 +283,7 @@ For the sixth image ...
 |	5.44925173e-12  | Road narrows on the right	|		
 | 	2.09899914e-12  | Right-of-way at the next intersection|
 
-For the seventh image ... 
+For the seventh image, the model is relatively sure that this is a Right-of-way at the next intersection (probability of 0.999), and the image does contain a stop sign. The top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -277,7 +292,8 @@ For the seventh image ...
 | 	1.25875556e-06   | Speed limit (30km/h)	|
 |   2.94801988e-10   | Pedestrians 			|
 |	2.85679036e-10   | Double curve  		|
-For the eighth image ... 
+
+For the eighth image, the model is relatively sure that this is a priority road (probability of 1), and the image does contain a stop sign. The top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -287,17 +303,17 @@ For the eighth image ...
 |  	5.38284940e-19	 | No passing for vehicles over 3.5 metric tons|
 | 	7.50166173e-24   | End of no passing by vehicles over 3.5 metric tons    |
 
-For the ninth image ... 
+For the ninth image, compare with the other signs, the model is relatively not sure that this is a Children crossing (probability of 0.72, compared with other probabilities of 0.999), and the image does contain a stop sign. The top five soft max probabilities were 
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| 	0.72094488   | Children crossing| 
-|  	0.16860622   | Traffic signals	|
-|   0.10302319   | Bumpy road		|
-|   0.00565148 	 | Road work		|
-| 	0.00158073   | General caution	|
+| 	0.786551058  | Road narrows on the right| 
+|  	0.207940593   | General caution	|
+|   0.00483439211  | Traffic signals	|
+|   3.68204725e-04	 | Road work		|
+| 	8.45819086e-05   | Speed limit (70km/h)	|
 
-For the tenth image ... 
+For the tenth image, the model is relatively sure that this is a No Entry (probability of 0.999), and the image does contain a stop sign. The top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
